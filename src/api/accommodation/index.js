@@ -1,13 +1,13 @@
 import express from "express";
 import createHttpError from "http-errors";
-import { JWTAuthMiddleware } from "../../lib/auth/jwtAuth.js";
+import { generateJwt } from "../../lib/auth/jwtAuth.js";
 import AccommodationsModel from "./model.js";
 
 const accommodationsRouter = express.Router();
 
 // GET ALL (BOTH)
 
-accommodationsRouter.get("/", JWTAuthMiddleware, async (req, res, next) => {
+accommodationsRouter.get("/", generateJwt, async (req, res, next) => {
   try {
     const accommodations = await AccommodationsModel.find().populate({
       path: "host",
@@ -22,7 +22,7 @@ accommodationsRouter.get("/", JWTAuthMiddleware, async (req, res, next) => {
 
 // GET SPECIFIC (BOTH)
 
-accommodationsRouter.get("/:id", JWTAuthMiddleware, async (req, res, next) => {
+accommodationsRouter.get("/:id", generateJwt, async (req, res, next) => {
   try {
     const accommodation = await AccommodationsModel.findById(
       req.params.id
@@ -45,7 +45,7 @@ accommodationsRouter.get("/:id", JWTAuthMiddleware, async (req, res, next) => {
 
 // POST ACCOMMODATION (HOST ONLY)
 
-accommodationsRouter.post(  "/", JWTAuthMiddleware, async (req, res, next) => {
+accommodationsRouter.post(  "/", generateJwt, async (req, res, next) => {
     try {
       const newAccommodation = new AccommodationsModel(req.body);
       const { _id } = await newAccommodation.save();
@@ -59,7 +59,7 @@ accommodationsRouter.post(  "/", JWTAuthMiddleware, async (req, res, next) => {
 
 // EDIT ACCOMMODATION (HOST ONLY)
 
-accommodationsRouter.put("/:id", JWTAuthMiddleware, async (req, res, next) => {
+accommodationsRouter.put("/:id", generateJwt, async (req, res, next) => {
   try {
     const updatedAccommodation = await AccommodationsModel.findByIdAndUpdate(
       req.params.id,
@@ -86,7 +86,7 @@ accommodationsRouter.put("/:id", JWTAuthMiddleware, async (req, res, next) => {
 
 accommodationsRouter.delete(
   "/:id",
-  JWTAuthMiddleware,
+  generateJwt,
   async (req, res, next) => {
     try {
       const deletedAccommodation = await AccommodationsModel.findByIdAndDelete(

@@ -30,7 +30,7 @@ userSchema.pre("save", async function (next) {
 userSchema.methods.toJSON = function () {
   const user = this.toObject();
 
-  delete user.password;
+  // delete user.password;
   delete user.createdAt;
   delete user.updatedAt;
   delete user.__v;
@@ -44,7 +44,7 @@ userSchema.static("checkCredentials", async function (email, password) {
 
   if (user) {
     const isMatch = await bcrypt.compare(password, user.password);
-    console.log("is Match?", isMatch);
+    console.log("is Match?", isMatch, "This is the user", user);
     if (isMatch) {
       return user;
     } else {

@@ -1,6 +1,6 @@
 import express from "express";
 import createHttpError from "http-errors";
-import { JWTAuthMiddleware } from "../../lib/auth/jwtAuth.js";
+import { generateJwt } from "../../lib/auth/jwtAuth.js";
 import {
   createTokens,
   verifyRefreshAndCreateNewTokens,
@@ -14,7 +14,7 @@ const usersRouter = express.Router();
 
 usersRouter.get(
   "/me/accommodations",
-  JWTAuthMiddleware,
+  generateJwt,
   async (req, res, next) => {
     try {
       const accommodations = await AccommodationsModel.find({
@@ -88,7 +88,7 @@ usersRouter.post("/refreshTokens", async (req, res, next) => {
 
 // GET ME
 
-usersRouter.get("/me", JWTAuthMiddleware, async (req, res, next) => {
+usersRouter.get("/me", generateJwt, async (req, res, next) => {
   try {
     const users = await UsersModel.findById(req.user._id);
     res.send(users);

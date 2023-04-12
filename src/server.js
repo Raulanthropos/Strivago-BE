@@ -11,6 +11,7 @@ import {
 import mongoose from "mongoose";
 import usersRouter from "./api/user/index.js";
 import accommodationsRouter from "./api/accommodation/index.js";
+import authRouter from "./api/authRouter/index.js";
 import dotenv  from 'dotenv';
 dotenv.config();
 
@@ -24,6 +25,7 @@ server.use(express.json());
 
 server.use("/users", usersRouter);
 server.use("/accommodations", accommodationsRouter);
+server.use("/auth", authRouter)
 
 server.use(badRequestHandler);
 server.use(unauthorizedHandler);
